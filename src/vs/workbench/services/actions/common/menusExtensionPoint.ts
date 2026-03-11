@@ -25,6 +25,8 @@ import { MarkdownString } from '../../../../base/common/htmlContent.js';
 import { ResolvedKeybinding } from '../../../../base/common/keybindings.js';
 import { IKeybindingService } from '../../../../platform/keybinding/common/keybinding.js';
 import { ApiProposalName } from '../../../../platform/extensions/common/extensionsApiProposals.js';
+import { INotificationService } from '../../../../platform/notification/common/notification.js';
+import { CommandsRegistry } from '../../../../platform/commands/common/commands.js';
 
 interface IAPIMenu {
 	readonly key: string;
@@ -137,6 +139,11 @@ const apiMenus: IAPIMenu[] = [
 		description: localize('menus.home', "The home indicator context menu (web only)"),
 		proposed: 'contribMenuBarHome',
 		supportsSubmenus: false
+	},
+	{
+		key: 'menuBar/file',
+		id: MenuId.MenubarFileMenu,
+		description: localize('menus.file', "The top level File menu")
 	},
 	{
 		key: 'menuBar/edit/copy',
@@ -998,6 +1005,72 @@ submenusExtensionPoint.setHandler(extensions => {
 const _apiMenusByKey = new Map(apiMenus.map(menu => ([menu.key, menu])));
 const _menuRegistrations = new DisposableStore();
 const _submenuMenuItems = new Map<string /* menu id */, Set<string /* submenu id */>>();
+
+const embeddedFileMenuPocContributions: {
+	readonly commands: ReadonlyArray<schema.IUserFriendlyCommand>;
+	readonly menus: { readonly [loc: string]: readonly schema.IUserFriendlyMenuItem[] };
+} = {
+	commands: [
+		{
+			command: 'workbench.action.dynamicMenus.print',
+			title: localize('dynamicMenus.print.title', "Print...")
+		},
+		{
+			command: 'workbench.action.dynamicMenus.printPreview',
+			title: localize('dynamicMenus.printPreview.title', "Print Preview...")
+		}
+	],
+	menus: {
+		'menuBar/file': [
+			{ command: 'workbench.action.dynamicMenus.print', group: '4z_print@1' },
+			{ command: 'workbench.action.dynamicMenus.printPreview', group: '4z_print@2' }
+		]
+	}
+};
+
+for (const command of embeddedFileMenuPocContributions.commands) {
+	MenuRegistry.addCommand({
+		id: command.command,
+		title: command.title
+	});
+}
+
+CommandsRegistry.registerCommand('workbench.action.dynamicMenus.print', accessor => {
+	accessor.get(INotificationService).info(localize('dynamicMenus.print.invoked', "Dynamic Menu POC: Print..."));
+});
+
+CommandsRegistry.registerCommand('workbench.action.dynamicMenus.printPreview', accessor => {
+	accessor.get(INotificationService).info(localize('dynamicMenus.printPreview.invoked', "Dynamic Menu POC: Print Preview..."));
+});
+
+for (const [menuKey, menuItems] of Object.entries(embeddedFileMenuPocContributions.menus)) {
+	const menu = _apiMenusByKey.get(menuKey);
+	if (!menu) {
+		continue;
+	}
+
+	for (const menuItem of menuItems) {
+		const command = MenuRegistry.getCommand(menuItem.command);
+		if (!command) {
+			continue;
+		}
+
+		const item: IMenuItem = { command, group: undefined, order: undefined, when: undefined };
+
+		if (menuItem.group) {
+			const idx = menuItem.group.lastIndexOf('@');
+			if (idx > 0) {
+				item.group = menuItem.group.substr(0, idx);
+				item.order = Number(menuItem.group.substr(idx + 1)) || undefined;
+			} else {
+				item.group = menuItem.group;
+			}
+		}
+
+		item.when = ContextKeyExpr.deserialize(menuItem.when);
+		MenuRegistry.appendMenuItem(menu.id, item);
+	}
+}
 
 const menusExtensionPoint = ExtensionsRegistry.registerExtensionPoint<{ [loc: string]: (schema.IUserFriendlyMenuItem | schema.IUserFriendlySubmenuItem)[] }>({
 	extensionPoint: 'menus',
