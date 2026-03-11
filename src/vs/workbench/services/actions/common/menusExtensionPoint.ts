@@ -140,40 +140,43 @@ const apiMenus: IAPIMenu[] = [
 		proposed: 'contribMenuBarHome',
 		supportsSubmenus: false
 	},
+	// Top-level menubar contribution points. These use the standard contributes.menus
+	// item shape (`command`, optional `when`, optional `group`) and respect group
+	// ordering to place items into menu sections.
 	{
 		key: 'menuBar/file',
 		id: MenuId.MenubarFileMenu,
-		description: localize('menus.file', "The top level File menu")
+		description: localize('menus.file', "The top level File menu. Contributed items appear alongside built-in File actions.")
 	},
 	{
 		key: 'menuBar/edit',
 		id: MenuId.MenubarEditMenu,
-		description: localize('menus.edit', "The top level Edit menu")
+		description: localize('menus.edit', "The top level Edit menu. Contributed items appear alongside built-in Edit actions.")
 	},
 	{
 		key: 'menuBar/selection',
 		id: MenuId.MenubarSelectionMenu,
-		description: localize('menus.selection', "The top level Selection menu")
+		description: localize('menus.selection', "The top level Selection menu. Contributed items appear alongside built-in Selection actions.")
 	},
 	{
 		key: 'menuBar/view',
 		id: MenuId.MenubarViewMenu,
-		description: localize('menus.view', "The top level View menu")
+		description: localize('menus.view', "The top level View menu. Contributed items appear alongside built-in View actions.")
 	},
 	{
 		key: 'menuBar/go',
 		id: MenuId.MenubarGoMenu,
-		description: localize('menus.go', "The top level Go menu")
+		description: localize('menus.go', "The top level Go menu. Contributed items appear alongside built-in Go actions.")
 	},
 	{
 		key: 'menuBar/terminal',
 		id: MenuId.MenubarTerminalMenu,
-		description: localize('menus.terminal', "The top level Terminal menu")
+		description: localize('menus.terminal', "The top level Terminal menu. Contributed items appear alongside built-in Terminal actions.")
 	},
 	{
 		key: 'menuBar/help',
 		id: MenuId.MenubarHelpMenu,
-		description: localize('menus.help', "The top level Help menu")
+		description: localize('menus.help', "The top level Help menu. Contributed items appear alongside built-in Help actions.")
 	},
 	{
 		key: 'menuBar/edit/copy',
