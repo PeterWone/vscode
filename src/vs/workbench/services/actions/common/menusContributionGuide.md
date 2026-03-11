@@ -188,6 +188,66 @@ Guidelines:
 }
 ```
 
+## Localization for Extension-Contributed Menus
+
+To localize contributed menu items, extension authors must localize the strings
+that menus render through command and submenu metadata.
+
+Required steps:
+
+1. Replace user-facing strings in `package.json` with `%key%` tokens.
+2. Add default values for those keys in `package.nls.json`.
+3. Add translated values in `package.nls.<locale>.json` files.
+4. Keep keys stable so translations remain compatible across releases.
+
+What must be localized for menu contributions:
+
+- `contributes.commands[].title`
+- `contributes.commands[].category` (if used)
+- `contributes.commands[].shortTitle` (if used)
+- `contributes.submenus[].label` (if used)
+
+Fields such as `contributes.menus[].when` and `contributes.menus[].group` are
+not user-facing labels and should not be localized.
+
+Example:
+
+```json
+{
+  "contributes": {
+    "commands": [
+      {
+        "command": "sample.print",
+        "title": "%command.sample.print.title%",
+        "category": "%command.sample.category%"
+      }
+    ],
+    "submenus": [
+      {
+        "id": "sample.printTools",
+        "label": "%submenu.sample.printTools.label%"
+      }
+    ],
+    "menus": {
+      "menuBar/file": [
+        { "command": "sample.print", "group": "4z_print@1" },
+        { "submenu": "sample.printTools", "group": "4z_print@2" }
+      ]
+    }
+  }
+}
+```
+
+`package.nls.json`:
+
+```json
+{
+  "command.sample.print.title": "Print...",
+  "command.sample.category": "Sample",
+  "submenu.sample.printTools.label": "Print Tools"
+}
+```
+
 ## 9. Troubleshooting Checklist
 
 - Command id exists in `contributes.commands`.
