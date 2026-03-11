@@ -146,6 +146,36 @@ const apiMenus: IAPIMenu[] = [
 		description: localize('menus.file', "The top level File menu")
 	},
 	{
+		key: 'menuBar/edit',
+		id: MenuId.MenubarEditMenu,
+		description: localize('menus.edit', "The top level Edit menu")
+	},
+	{
+		key: 'menuBar/selection',
+		id: MenuId.MenubarSelectionMenu,
+		description: localize('menus.selection', "The top level Selection menu")
+	},
+	{
+		key: 'menuBar/view',
+		id: MenuId.MenubarViewMenu,
+		description: localize('menus.view', "The top level View menu")
+	},
+	{
+		key: 'menuBar/go',
+		id: MenuId.MenubarGoMenu,
+		description: localize('menus.go', "The top level Go menu")
+	},
+	{
+		key: 'menuBar/terminal',
+		id: MenuId.MenubarTerminalMenu,
+		description: localize('menus.terminal', "The top level Terminal menu")
+	},
+	{
+		key: 'menuBar/help',
+		id: MenuId.MenubarHelpMenu,
+		description: localize('menus.help', "The top level Help menu")
+	},
+	{
 		key: 'menuBar/edit/copy',
 		id: MenuId.MenubarCopy,
 		description: localize('menus.opy', "'Copy as' submenu in the top level Edit menu")
@@ -1018,12 +1048,54 @@ const embeddedFileMenuPocContributions: {
 		{
 			command: 'workbench.action.dynamicMenus.printPreview',
 			title: localize('dynamicMenus.printPreview.title', "Print Preview...")
+		},
+		{
+			command: 'workbench.action.dynamicMenus.sampleEdit',
+			title: localize('dynamicMenus.sampleEdit.title', "Sample Edit Item")
+		},
+		{
+			command: 'workbench.action.dynamicMenus.sampleSelection',
+			title: localize('dynamicMenus.sampleSelection.title', "Sample Selection Item")
+		},
+		{
+			command: 'workbench.action.dynamicMenus.sampleView',
+			title: localize('dynamicMenus.sampleView.title', "Sample View Item")
+		},
+		{
+			command: 'workbench.action.dynamicMenus.sampleGo',
+			title: localize('dynamicMenus.sampleGo.title', "Sample Go Item")
+		},
+		{
+			command: 'workbench.action.dynamicMenus.sampleTerminal',
+			title: localize('dynamicMenus.sampleTerminal.title', "Sample Terminal Item")
+		},
+		{
+			command: 'workbench.action.dynamicMenus.sampleHelp',
+			title: localize('dynamicMenus.sampleHelp.title', "Sample Help Item")
 		}
 	],
 	menus: {
 		'menuBar/file': [
 			{ command: 'workbench.action.dynamicMenus.print', group: '4z_print@1' },
 			{ command: 'workbench.action.dynamicMenus.printPreview', group: '4z_print@2' }
+		],
+		'menuBar/edit': [
+			{ command: 'workbench.action.dynamicMenus.sampleEdit', group: '9_sample@1' }
+		],
+		'menuBar/selection': [
+			{ command: 'workbench.action.dynamicMenus.sampleSelection', group: '9_sample@1' }
+		],
+		'menuBar/view': [
+			{ command: 'workbench.action.dynamicMenus.sampleView', group: '9_sample@1' }
+		],
+		'menuBar/go': [
+			{ command: 'workbench.action.dynamicMenus.sampleGo', group: '9_sample@1' }
+		],
+		'menuBar/terminal': [
+			{ command: 'workbench.action.dynamicMenus.sampleTerminal', group: '9_sample@1' }
+		],
+		'menuBar/help': [
+			{ command: 'workbench.action.dynamicMenus.sampleHelp', group: '9_sample@1' }
 		]
 	}
 };
@@ -1041,6 +1113,30 @@ CommandsRegistry.registerCommand('workbench.action.dynamicMenus.print', accessor
 
 CommandsRegistry.registerCommand('workbench.action.dynamicMenus.printPreview', accessor => {
 	accessor.get(INotificationService).info(localize('dynamicMenus.printPreview.invoked', "Dynamic Menu POC: Print Preview..."));
+});
+
+CommandsRegistry.registerCommand('workbench.action.dynamicMenus.sampleEdit', accessor => {
+	accessor.get(INotificationService).info(localize('dynamicMenus.sampleEdit.invoked', "Dynamic Menu POC: Edit sample item"));
+});
+
+CommandsRegistry.registerCommand('workbench.action.dynamicMenus.sampleSelection', accessor => {
+	accessor.get(INotificationService).info(localize('dynamicMenus.sampleSelection.invoked', "Dynamic Menu POC: Selection sample item"));
+});
+
+CommandsRegistry.registerCommand('workbench.action.dynamicMenus.sampleView', accessor => {
+	accessor.get(INotificationService).info(localize('dynamicMenus.sampleView.invoked', "Dynamic Menu POC: View sample item"));
+});
+
+CommandsRegistry.registerCommand('workbench.action.dynamicMenus.sampleGo', accessor => {
+	accessor.get(INotificationService).info(localize('dynamicMenus.sampleGo.invoked', "Dynamic Menu POC: Go sample item"));
+});
+
+CommandsRegistry.registerCommand('workbench.action.dynamicMenus.sampleTerminal', accessor => {
+	accessor.get(INotificationService).info(localize('dynamicMenus.sampleTerminal.invoked', "Dynamic Menu POC: Terminal sample item"));
+});
+
+CommandsRegistry.registerCommand('workbench.action.dynamicMenus.sampleHelp', accessor => {
+	accessor.get(INotificationService).info(localize('dynamicMenus.sampleHelp.invoked', "Dynamic Menu POC: Help sample item"));
 });
 
 for (const [menuKey, menuItems] of Object.entries(embeddedFileMenuPocContributions.menus)) {
