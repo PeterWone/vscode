@@ -1,5 +1,7 @@
 # Menu Contributions Guide
 
+CHANGE
+
 This document explains how to contribute menu items, how those items bind to commands, and how to control placement, visibility, and enabled state.
 
 ## 1. Contribution Model
