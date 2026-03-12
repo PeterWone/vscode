@@ -25,6 +25,7 @@ import { IPreferencesService } from '../../../services/preferences/common/prefer
 import { ICommandService } from '../../../../platform/commands/common/commands.js';
 import { OpenRecentAction } from '../../../browser/actions/windowActions.js';
 import { isICommandActionToggleInfo } from '../../../../platform/action/common/action.js';
+import { getFlatContextMenuActions } from '../../../../platform/actions/browser/menuEntryActionViewItem.js';
 
 export class NativeMenubarControl extends MenubarControl {
 
